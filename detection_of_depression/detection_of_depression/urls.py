@@ -14,11 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf.urls import url
+from django.urls import path
 from django.contrib import admin
 from Remote_User import views as clientview
 from detection_of_depression import settings
 from Tweet_Server import views as Researchview
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
@@ -50,6 +52,17 @@ urlpatterns = [
     url(r'^View_Depression_Posts/$', Researchview.View_Depression_Posts, name="View_Depression_Posts"),
     url(r'^View_Depression_reviews/$', Researchview.View_Depression_reviews, name="View_Depression_reviews"),
 
+    path('password_reset/', auth_views.PasswordResetView.as_view(),
+         name="password_reset"),
 
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(),
+         name="password_reset_done"),
+
+    path('password_reset_confirm/<uidb64>/<token>/',
+         auth_views.PasswordResetConfirmView.as_view(),
+         name="password_reset_confirm"),
+
+    path('password_reset_complete/done/', auth_views.PasswordResetCompleteView.as_view(),
+         name="password_reset_complete"),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
